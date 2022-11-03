@@ -19,27 +19,44 @@ export interface Env {
 	// MY_BUCKET: R2Bucket;
 }
 
-export default {
-	async fetch(
-		request: Request,
-		env: Env,
-		ctx: ExecutionContext
-	): Promise<Response> {
-		return new Response("Hello World!");
-	},
-};
 
 
 import 'dotenv/config'
 import { connect } from '@planetscale/database'
+const DB_NAME = "usres"
+const DATABASE_HOST = "ap-south.connect.psdb.cloud"
+const DATABASE_USERNAME = "qibxfctzwu7xandydqa8"
+const DATABASE_PASSWORD = "pscale_pw_FNClWMKRPZM117b3GNU9JaLW1Da7JrG79np6V6vbJZm"
+
+// database: usres
+// username: qibxfctzwu7xandydqa8
+// host: ap-south.connect.psdb.cloud
+// password: pscale_pw_FNClWMKRPZM117b3GNU9JaLW1Da7JrG79np6V6vbJZm
+
 const config = {
-  host: process.env.DATABASE_HOST,
-  username: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD
+  host: DATABASE_HOST,
+  username: DATABASE_USERNAME,
+  password:	DATABASE_PASSWORD,
+  database: DB_NAME
 }
 export const connection = connect(config)
+const results: any = connection.execute('select * from users')
+console.log(results['rows'])
 
 
+import { Router } from "itty-router";
+const router = Router()
+
+import { account_routes } from './router/routes';
+
+account_routes(router);
 
 
+router.all('*', () =>
+  console.log("error")
+);	
+
+addEventListener('fetch', (event: any) => {
+	event.respondWith(router.handle(event.request));
+});
 

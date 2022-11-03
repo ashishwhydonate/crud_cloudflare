@@ -15,6 +15,7 @@
   "dependencies": {
     "@planetscale/database": "^1.4.0",
     "dotenv": "^16.0.3",
-    "itty": "^0.0.1"
+    "itty": "^0.0.1",
+    "itty-router": "^2.6.6"
   }
 }
